@@ -18,7 +18,7 @@ class Song(Base):
     composer = relationship("Musician", back_populates="songs")
     harmony = relationship("Harmony", back_populates="song")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Song(id={self.id!r}, title={self.title!r}, composer={self.composer!r})"
 
 
@@ -30,7 +30,7 @@ class Musician(Base):
         "Song", back_populates="composer", cascade="all, delete-orphan"
     )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Musician(id={self.id!r}, name={self.name!r})"
 
 
@@ -42,5 +42,5 @@ class Harmony(Base):
     song_id = Column(Integer, ForeignKey("song.id"), nullable=False)
     song = relationship("Song", back_populates="harmony")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Harmony(id={self.id!r}), measures={self.measures!r}"

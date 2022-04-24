@@ -1,9 +1,12 @@
 import json
+import os
 from glob import glob
 from xml.dom.minidom import parse
+
 from music21 import converter
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
+
 from .model import Base
 from .model import Harmony
 from .model import Musician
@@ -71,7 +74,7 @@ class HarmonyParser:
 def import_into_db(path: str) -> None:
     eng = create_engine("sqlite:///leadsheets.sqlite", echo=False, future=True)
     Base.metadata.create_all(eng)
-    songs = glob(path + "*.xml") + glob(path + "*.musicxml")
+    songs: list[str] = glob(os.path.join(path , "*.xml")) + glob(os.path.join(path, "*.musicxml"))
     with Session(eng) as session:
         objs = []
         for i, song in enumerate(songs):
