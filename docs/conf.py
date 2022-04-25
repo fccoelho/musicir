@@ -6,6 +6,7 @@ project = "Music Information Retrieval"
 author = "Flávio Codeço Coelho"
 copyright = f"{datetime.now().year}, {author}"
 extensions = [
+    "myst_parser"
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx_click",

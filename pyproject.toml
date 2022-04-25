@@ -21,6 +21,7 @@ click = "^8.0.1"
 music21 = "^7.3.1"
 SQLAlchemy = "^1.4.35"
 attrs = "^21.4.0"
+myst-parser = "^0.17.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
