@@ -3,7 +3,8 @@ import unittest
 import pytest
 
 from musicir.leadsheets.musicxml import ChordParser
-from musicir.leadsheets.musicxml import HarmonyParser, import_into_db
+from musicir.leadsheets.musicxml import HarmonyParser
+from musicir.leadsheets.musicxml import import_into_db
 
 
 class MyTestCase(unittest.TestCase):
