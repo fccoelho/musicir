@@ -9,6 +9,7 @@
    :maxdepth: 1
 
    usage
+   Example <https://github.com/fccoelho/musicir/blob/main/examples/Extracting%20Harmonies.ipynb>
    reference
    contributing
    Code of Conduct <codeofconduct>

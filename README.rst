@@ -39,7 +39,9 @@ Music Information Retrieval
 Features
 --------
 
-* TODO
+MusicIR goal is to offer a simple API to accomplish common Music Information Retrieval tasks. It leverages other libraries but tries to keep the complexity low.
+
+Currently it offers a very simple way to extract the harmony (Chord anotations) from leadsheets in `musicxml` format.
 
 
 Requirements
