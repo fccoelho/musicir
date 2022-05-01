@@ -1,4 +1,6 @@
 """Test cases for the __main__ module."""
+import os
+
 import pytest
 from click.testing import CliRunner
 
@@ -13,5 +15,6 @@ def runner() -> CliRunner:
 
 def test_main_succeeds(runner: CliRunner) -> None:
     """It exits with a status code of zero."""
-    result = runner.invoke(__main__.main)
+    result = runner.invoke(__main__.main, ["test_leadsheets/fixtures/Ambidextrous.xml"])
+    assert result.output.startswith("[{")
     assert result.exit_code == 0
