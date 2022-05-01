@@ -1,11 +1,14 @@
 """Command-line interface."""
-import click
-from musicir.leadsheets.musicxml import HarmonyParser
 from pprint import pprint
+
+import click
+
+from musicir.leadsheets.musicxml import HarmonyParser
+
 
 @click.command()
 @click.version_option()
-@click.argument('filename', type=click.File('r'))
+@click.argument("filename", type=click.File("r"))
 def main(filename: str) -> None:
     """Music Information Retrieval.
     Extract the harmony from leadsheets, in musicxml format.
