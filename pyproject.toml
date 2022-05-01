@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "musicir"
-version = "0.0.1"
+version = "0.0.2"
 description = "Music Information Retrieval"
 authors = ["Flávio Codeço Coelho <fccoelho@gmail.com>"]
 license = "MIT"
@@ -47,6 +47,9 @@ sphinx-click = "^3.0.2"
 Pygments = "^2.10.0"
 pyupgrade = "^2.29.1"
 furo = ">=2021.11.12"
+myst = "^1.0.4"
+myst-nb = "^0.14.0"
+myst-parser = "^0.17.2"
 
 [tool.poetry.scripts]
 musicir = "musicir.__main__:main"
