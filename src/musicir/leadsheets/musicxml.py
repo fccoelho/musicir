@@ -16,9 +16,9 @@ from .model import Song
 class ChordParser:
     alt_symbols: dict[str, str] = {"-1": "♭", "1": "♯"}
 
-    def __init__(self, element: object):
-        self.root = element.find("root").find("root-step").text
-        alterations = [el for el in element.iter("root-alter")]
+    def __init__(self, element: ET.Element):
+        self.root: str = element.find("root").find("root-step").text
+        alterations: list[ET.Element] = [el for el in element.iter("root-alter")]
         self.alteration = "" if not len(alterations) else alterations[0].text
         self.alteration = self.alt_symbols.get(self.alteration, self.alteration)
         self.kind = element.find("kind").attrib["text"]
