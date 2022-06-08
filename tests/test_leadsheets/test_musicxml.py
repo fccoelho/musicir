@@ -21,11 +21,11 @@ class MyTestCase(unittest.TestCase):
         self.assertIsInstance(chord.kind, str)
         self.assertIsInstance(chord.function, str)
 
-    def test_Chord_repr(self) -> None :
+    def test_Chord_repr(self) -> None:
         ls = HarmonyParser("tests/test_leadsheets/fixtures/Ambidextrous.xml")
         c = ls.get_measure_chords(1)[0]
         chord = ChordParser(c)
-        self.assertIsInstance(c.__repr__(), str)#.startswith(chord.root)
+        self.assertIsInstance(c.__repr__(), str)  # .startswith(chord.root)
         # assert c.__str__().startswith(chord.root)
 
     def test_get_measures(self):
@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
         c = ls.get_measure_chords(1)[0]
         # self.assertIsInstance(c, list)
 
-    def test_load_directory(self)-> None:
+    def test_load_directory(self) -> None:
         import_into_db("tests/test_leadsheets/fixtures")
 
 
