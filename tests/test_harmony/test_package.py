@@ -1,6 +1,7 @@
 import unittest  # type: ignore
 
-from musicir.harmony import get_scale_notes, get_enharmonic
+from musicir.harmony import get_enharmonic
+from musicir.harmony import get_scale_notes
 
 
 class HarmonyPackageTestCase(unittest.TestCase):
@@ -15,8 +16,8 @@ class HarmonyPackageTestCase(unittest.TestCase):
             self.assertIn(n, [answer[i], get_enharmonic(answer[i]).upper()])
 
     def test_get_enharmonic(self):
-        self.assertEqual('c', get_enharmonic('b#'))
-        self.assertEqual('b-', get_enharmonic('a#'))
+        self.assertEqual("c", get_enharmonic("b#"))
+        self.assertEqual("b-", get_enharmonic("a#"))
 
 
 if __name__ == "__main__":

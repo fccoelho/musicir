@@ -359,10 +359,23 @@ def get_scale_notes(scale, tonic="C"):  # type: ignore
     return [hscale.pitches[j].name for j in scales[scale]]
 
 
-def get_enharmonic(note_name:str) -> str:
-    en_dict = {'c-': 'b', 'c#': 'd-', 'd#': 'e-', 'e': 'f-', 'e#': 'f', 'f#': 'g-', 'g#': 'a-', 'a#': 'b-', 'b#': 'c',
-               'd': 'c##', 'g': 'a--', 'a': 'b--'}
+def get_enharmonic(note_name: str) -> str:
+    en_dict = {
+        "c-": "b",
+        "c#": "d-",
+        "d#": "e-",
+        "e": "f-",
+        "e#": "f",
+        "f#": "g-",
+        "g#": "a-",
+        "a#": "b-",
+        "b#": "c",
+        "d": "c##",
+        "g": "a--",
+        "a": "b--",
+    }
     en_dict.update(dict(zip(en_dict.values(), en_dict.keys())))
     return en_dict[note_name.lower()]
 
-notesx = notes + tuple([get_enharmonic(n) for n in notes])
+
+notesx = notes + tuple(get_enharmonic(n) for n in notes)
