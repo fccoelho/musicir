@@ -235,7 +235,7 @@ scales = {
     "Locrian": [0, 1, 3, 5, 6, 8, 10],
     "Harmonic Minor": [0, 2, 3, 5, 7, 8, 11],
     "Harmonic Major": [0, 2, 4, 5, 7, 8, 11],
-    "Medolic Minor": [0, 2, 3, 5, 7, 9, 11],
+    "Melodic Minor": [0, 2, 3, 5, 7, 9, 11],
     "Hungarian Gypsy 1": [0, 2, 3, 6, 7, 8, 11],
     "Hungarian Gypsy 2": [0, 2, 3, 6, 7, 8, 10],
     "Hungarian Major": [0, 3, 4, 6, 7, 9, 10],
@@ -359,8 +359,10 @@ def get_scale_notes(scale, tonic="C"):  # type: ignore
     return [hscale.pitches[j].name for j in scales[scale]]
 
 
-def get_enharmonic(note_name):
+def get_enharmonic(note_name:str) -> str:
     en_dict = {'c-': 'b', 'c#': 'd-', 'd#': 'e-', 'e': 'f-', 'e#': 'f', 'f#': 'g-', 'g#': 'a-', 'a#': 'b-', 'b#': 'c',
                'd': 'c##', 'g': 'a--', 'a': 'b--'}
     en_dict.update(dict(zip(en_dict.values(), en_dict.keys())))
     return en_dict[note_name.lower()]
+
+notesx = notes + tuple([get_enharmonic(n) for n in notes])
