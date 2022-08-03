@@ -8,6 +8,8 @@ from musicir.leadsheets.musicxml import SongParser
 
 @click.command()
 @click.version_option()
+# @click.option('-h')
+# @click.option('-m')
 @click.argument("filename", type=click.File("r"))
 def main(filename: str) -> None:
     """Music Information Retrieval.
