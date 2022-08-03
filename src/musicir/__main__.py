@@ -3,7 +3,7 @@ from pprint import pprint
 
 import click
 
-from musicir.leadsheets.musicxml import HarmonyParser
+from musicir.leadsheets.musicxml import SongParser
 
 
 @click.command()
@@ -16,8 +16,8 @@ def main(filename: str) -> None:
 
     FILENAME is the leadsheet from which the harmony is to be extracted.
     """
-    H = HarmonyParser(filename)
-    click.echo(H.as_json())
+    S = SongParser(filename)
+    click.echo(S.chords_as_json())
 
 
 if __name__ == "__main__":

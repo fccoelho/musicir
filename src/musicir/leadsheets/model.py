@@ -17,6 +17,7 @@ class Song(Base):
     composer_id = Column(Integer, ForeignKey("musician.id"))
     composer = relationship("Musician", back_populates="songs")
     harmony = relationship("Harmony", back_populates="song")
+    melody = relationship("Melody", back_populates="song")
 
     def __repr__(self) -> str:
         return f"Song(id={self.id!r}, title={self.title!r}, composer={self.composer!r})"
@@ -44,3 +45,14 @@ class Harmony(Base):
 
     def __repr__(self) -> str:
         return f"Harmony(id={self.id!r}), measures={self.measures!r}"
+
+
+class Melody(Base):
+    __tablename__ = "melody"
+    id = Column(Integer, primary_key=True)
+    song_id = Column(Integer, ForeignKey("song.id"), nullable=False)
+    song = relationship("Song", back_populates="melody")
+    notes = Column(JSON)
+
+    def __repr__(self) -> str:
+        return f"Melody(id={self.id!r}), notes={self.notes!r}"

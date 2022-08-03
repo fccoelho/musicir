@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from .model import Base
 from .model import Harmony
+from .model import Melody
 from .model import Musician
 from .model import Song
 
@@ -31,8 +32,41 @@ class ChordParser:
         return self.__repr__()
 
 
+class NoteParser:
+    alt_symbols: dict[str, str] = {"-1": "♭", "1": "♯"}
+
+    def __init__(self, element: ET.Element):
+        pitch = element.find("pitch")
+        if not pitch:
+            self.is_rest = True
+            self.figure = element.find("type").text
+            self.duration = element.find("duration").text
+            self.voice = element.find("voice").text
+            self.note = None
+            return
+        else:
+            self.is_rest = False
+        self.note = pitch.find("step").text
+        self.octave = pitch.find("octave").text
+        try:
+            self.alter = pitch.find("alter").text
+            self.accidental = element.find("accidental").text
+        except AttributeError:
+            self.alter = ""
+            self.accidental = ""
+        self.figure = element.find("type").text
+        self.duration = element.find("duration").text
+        self.voice = element.find("voice").text
+
+
+    def __repr__(self) -> str:
+        if self.note:
+            return f"{self.note}{self.alt_symbols.get(self.alter, '')}"
+        return f"Rest {self.figure}"
+
+
 # @define
-class HarmonyParser:
+class SongParser:
     def __init__(self, xmlfile: str):
         """
         Extracts the harmony from musicxml file when available.
@@ -57,7 +91,7 @@ class HarmonyParser:
         chords: list[object] = meas.findall("harmony")
         return chords
 
-    def as_json(self) -> str:
+    def chords_as_json(self) -> str:
         """
         Return full harmony as a JSON array.
         Returns: JSON string
@@ -68,6 +102,14 @@ class HarmonyParser:
             h: list[object] = self.get_measure_chords(m)
             hj.append({"measure": m, "chords": [ChordParser(c).__str__() for c in h]})
         return json.dumps(hj)
+
+    def get_measure_melody(self, measure: int = 0) -> list[object]:
+        """
+        Returns list of notes in the specified measure. Each note is an xml element
+        """
+        meas = self.measures[measure]
+        notes: list[object] = meas.findall("note")
+        return notes or []
 
 
 def import_into_db(path: str) -> None:
@@ -81,12 +123,14 @@ def import_into_db(path: str) -> None:
         for i, song in enumerate(songs):
             print(f"{i+1} of {len(songs)}: {song}loading {song}...\r", end="")
             SO = converter.parse(song)
-            HP = HarmonyParser(song)
+            HP = SongParser(song)
             sng = Song(
                 title=SO.metadata.title,
                 composer=Musician(name=SO.metadata.composer),
                 copyright=SO.metadata.all()[1][1],
-                harmony=[Harmony(measures=HP.number_of_measures, chords=HP.as_json())],
+                harmony=[
+                    Harmony(measures=HP.number_of_measures, chords=HP.chords_as_json())
+                ],
             )
             objs.append(sng)
         session.add_all(objs)
