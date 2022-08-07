@@ -20,6 +20,7 @@ m21_scales = {
     "Lydian": m21.scale.LydianScale,
     "Locrian": m21.scale.LocrianScale,
     "Mixolydian": m21.scale.MixolydianScale,
+    "Aeolian": m21.scale.MinorScale,
     "Octatonic": m21.scale.OctatonicScale,
     "Phrygian": m21.scale.PhrygianScale,
     "RagAsawari": m21.scale.RagAsawari,
