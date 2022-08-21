@@ -10,6 +10,7 @@
 
    usage
    Example <https://github.com/fccoelho/musicir/blob/main/examples/Extracting%20Harmonies.ipynb>
+   Rhythms.ipynb
    reference
    contributing
    Code of Conduct <codeofconduct>

@@ -59,12 +59,11 @@ class NoteParser:
         self.duration = element.find("duration").text
         self.voice = element.find("voice").text
 
-
     def __repr__(self) -> str:
         if self.note:
             return f"{self.note}{self.alt_symbols.get(self.alter, '')}"
         return f"Rest {self.figure}"
-    
+
     def __str__(self) -> str:
         return self.__repr__()
 
@@ -106,12 +105,14 @@ class SongParser:
             h: list[object] = self.get_measure_chords(m)
             hj.append({"measure": m, "chords": [ChordParser(c).__str__() for c in h]})
         return json.dumps(hj)
-    
+
     def melody_as_json(self) -> str:
-        full_melody: list[dict[str, object]]=[]
+        full_melody: list[dict[str, object]] = []
         for m in range(self.number_of_measures):
             notes: list[object] = self.get_measure_melody(m)
-            full_melody.append({"measure": m, "notes": [NoteParser(n).__str__() for n in notes]})
+            full_melody.append(
+                {"measure": m, "notes": [NoteParser(n).__str__() for n in notes]}
+            )
         return json.dumps(full_melody)
 
     def get_measure_melody(self, measure: int = 0) -> list[object]:

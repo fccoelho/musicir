@@ -43,7 +43,7 @@ class MyTestCase(unittest.TestCase):
         for n in ns:
             note = NoteParser(n)
             self.assertIsInstance(note.__repr__(), str)
-            self.assertIn(note.note, [None, 'C', 'D', 'E', 'F', 'G', 'A', 'B'])
+            self.assertIn(note.note, [None, "C", "D", "E", "F", "G", "A", "B"])
 
 
 if __name__ == "__main__":
