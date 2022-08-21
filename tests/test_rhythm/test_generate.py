@@ -10,6 +10,10 @@ class EuclidTestCase(unittest.TestCase):
         E2 = Euclid(3,8)
         self.assertEqual('X..X..X.', str(E2))
 
+    def test_create_5_8(self):
+        E = Euclid(5,8)
+        self.assertEqual([1,0,1,1,0,1,1,0], E.rhythm)
+
 
 if __name__ == '__main__':
     unittest.main()
