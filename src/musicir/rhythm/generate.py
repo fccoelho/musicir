@@ -45,15 +45,15 @@ class Euclid:
     def __repr__(self) -> str:
         return "".join(["X" if n else "." for n in self.rhythm])
 
-    def get_beat(self):
-        self.beat = stream.Part()
-        self.beat.insert(0, instrument.Woodblock())
+    def get_beat(self, times=2):
+        self.beat = stream.Stream()
+        # self.beat.insert(0, instrument.Piano())
         meas = stream.Measure()
         meas.leftBarline = Repeat(direction='start')
-        meas.rightBarline = Repeat(direction='end')
+        meas.rightBarline = Repeat(direction='end', times=times)
         for i in self.rhythm:
             if i == 1:
-                n = Note("A2", type="eighth")
+                n = Note("A4", type="eighth")
                 meas.append(n)
             else:
                 r = Rest(type='eighth')
