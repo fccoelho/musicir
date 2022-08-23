@@ -16,6 +16,10 @@ class EuclidTestCase(unittest.TestCase):
         E = Euclid(5, 8)
         self.assertEqual([1, 0, 1, 1, 0, 1, 1, 0], E.rhythm)
 
+    def test_create_samba(self):
+        E = Euclid(7,16)
+
+
 
 if __name__ == "__main__":
     unittest.main()
