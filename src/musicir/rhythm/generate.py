@@ -43,10 +43,9 @@ traditional_rhythms = {
 class Euclid:
     """Euclidean Rhythm generator"""
 
-    def __init__(self, notes: int, length: int, start: int = 1):
+    def __init__(self, notes: int, length: int):
         self.notes = notes
         self.length = length
-        self.start = start
         self.rhythm = self._bjorklund()
         self.get_beat()
 
@@ -78,21 +77,18 @@ class Euclid:
     def __repr__(self) -> str:
         return "".join(["X" if n else "." for n in self.rhythm])
 
-    def get_beat(self) -> stream.Stream:
-        """
-        Returns the beat as a music21 Stream object.
-        """
-        self.beat = stream.Part()
-        self.beat.insert(0, instrument.Woodblock())
+    def get_beat(self, times=2):
+        self.beat = stream.Stream()
+        # self.beat.insert(0, instrument.Piano())
         meas = stream.Measure()
         meas.leftBarline = Repeat(direction='start')
-        meas.rightBarline = Repeat(direction='end')
+        meas.rightBarline = Repeat(direction='end', times=times)
 
         n_idx = [i for i,n in self.rhythm, if n]
         s_rhythm = self.rhythm[n_idx[self.start-1]:] + self.rhythm[:self.start-1]
         for i in s_rhythm:
             if i == 1:
-                n = Note("A2", type="eighth")
+                n = Note("A4", type="eighth")
                 meas.append(n)
             else:
                 r = Rest(type='eighth')
@@ -106,7 +102,7 @@ class Euclid:
 
 class RhythmViewer:
     # Visualization attributes
-    self.radius = 0.5
+    radius = 0.5
 
     def __init__(self, rhythm):
         self.rhythm = rhythm
