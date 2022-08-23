@@ -32,10 +32,11 @@ class Euclid:
         while remainder > 1:
             l = len(seq[0])
             i = 0
-            for s in seq:
-                if len(s) < l:
-                    seq[i].extend(s)
-                    i += 1
+            for s in seq[-remainder:]:
+                if i == (len(seq) - remainder):
+                    break
+                seq[i].extend(s)
+                i += 1
             seq = seq[:-i]
             remainder = sum(len(j) < len(seq[0]) for j in seq)
         rh = []
@@ -90,7 +91,7 @@ class RhythmViewer:
         """
         Plots rhythms on a circle.
         Args:
-            circle: Draws the cricle
+            circle: Draws the circle
             lines: Connect notes with lines
         """
         fig, ax = plt.subplots(figsize=(12, 12))

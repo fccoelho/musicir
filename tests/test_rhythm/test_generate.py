@@ -18,6 +18,7 @@ class EuclidTestCase(unittest.TestCase):
 
     def test_create_samba(self):
         E = Euclid(7,16)
+        self.assertEqual([1,0,0,1,0,1,0,1,0,0,1,0,1,0,1,0], E.rhythm)
 
 
 
