@@ -7,13 +7,46 @@ from music21 import stream, instrument
 from music21.note import Note, Rest
 from music21.bar import Repeat
 
+traditional_rhythms = {
+    'fandango': Euclid(4, 12),
+    'cueca': Euclid(2, 3),
+    'khafif-e-ramal': Euclid(2, 5),
+    'cumbia': Euclid(3, 4),
+    'calypso': Euclid(3, 4),
+    'khalif-e-saghil': Euclid(3, 4),
+    'khafif-e-ramal_2': Euclid(3, 5, 2),
+    'ruchenitza': Euclid(3, 7),
+    'tresillo': Euclid(3, 8),
+    'ruchenitza_2': Euclid(4, 7),
+    'aksak': Euclid(4, 9),
+    'outside_now': Euclid(4, 11),
+    'york-samai': Euclid(5, 6,2),
+    'Nawakhat': Euclid(5, 7),
+    'cinquillo': Euclid(5, 8),
+    'spanish_tango': Euclid(5,8, 2),
+    'al-saghil-al-sani': Euclid(5,8,2),
+    'agsag-samai': Euclid(5,9),
+    'venda': Euclid(5,9,2),
+    'pictures_at_an_exhibition': Euclid(5,11),
+    'venda_clapping': Euclid(5,12),
+    'bossa-nova': Euclid(5,16,3),
+    'bendir': Euclid(7,8),
+    'mpre': Euclid(7,12),
+    'samba': Euclid(7,16,7),
+    'agogo-samba': Euclid(9,16,4),
+    'ngbaka-maibo': Euclid(9,16,8),
+    'aka': Euclid(11,24,7),
+    'aka_upper_sangha': Euclid(13,24,4)
+}
+
 
 class Euclid:
     """Euclidean Rhythm generator"""
 
-    def __init__(self, notes: int, length: int):
+    def __init__(self, notes: int, length: int, start: int = 1):
         self.notes = notes
         self.length = length
+        self.start = start
         self.rhythm = self._bjorklund()
         self.get_beat()
 
@@ -45,13 +78,19 @@ class Euclid:
     def __repr__(self) -> str:
         return "".join(["X" if n else "." for n in self.rhythm])
 
-    def get_beat(self):
+    def get_beat(self) -> stream.Stream:
+        """
+        Returns the beat as a music21 Stream object.
+        """
         self.beat = stream.Part()
         self.beat.insert(0, instrument.Woodblock())
         meas = stream.Measure()
         meas.leftBarline = Repeat(direction='start')
         meas.rightBarline = Repeat(direction='end')
-        for i in self.rhythm:
+
+        n_idx = [i for i,n in self.rhythm, if n]
+        s_rhythm = self.rhythm[n_idx[self.start-1]:] + self.rhythm[:self.start-1]
+        for i in s_rhythm:
             if i == 1:
                 n = Note("A2", type="eighth")
                 meas.append(n)
@@ -60,25 +99,36 @@ class Euclid:
                 meas.append(r)
         self.beat.append(meas)
         return self.beat
+
     def play(self):
         self.beat.show('midi')
 
 
-
 class RhythmViewer:
+    # Visualization attributes
+    self.radius = 0.5
+
     def __init__(self, rhythm):
         self.rhythm = rhythm
         self.polygon = self._polygon()
 
     def _polygon(self):
         cp = mp.CirclePolygon(
-            (0.5, 0.5), radius=0.5, resolution=len(self.rhythm), fc="y"
+            (self.radius, self.radius), radius=self.radius, resolution=len(self.rhythm), fc="y"
         )
         return cp
 
-    def show(self):
+    def show(self, circle: bool = True, lines: bool = True):
+        """
+        Plots rhythms on a circle.
+        Args:
+            circle: Draws the cricle
+            lines: Connect notes with lines
+        """
         fig, ax = plt.subplots(figsize=(12, 12))
         patches = [self.polygon]
+        if circle:
+            patches.append(plt.Circle((self.radius, self.radius), radius=self.radius, color='k'))
         verts = self.polygon.get_path().vertices[::-1]
         trans = self.polygon.get_patch_transform()
         points = trans.transform(verts)
@@ -92,5 +142,6 @@ class RhythmViewer:
 
         collection = PatchCollection(patches, alpha=0.7)
         ax.add_collection(collection)
-        ax.plot([p[0] for p in notes], [p[1] for p in notes], "k")
+        if lines:
+            ax.plot([p[0] for p in notes], [p[1] for p in notes], "k")
         ax.axis("off")
