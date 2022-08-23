@@ -10,3 +10,4 @@ python:
   install:
     - requirements: docs/requirements.txt
     - path: .
+  system_packages: true

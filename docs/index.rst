@@ -6,12 +6,12 @@
 
 .. toctree::
    :hidden:
-   :maxdepth: 1
+   :maxdepth: 2
 
    usage
    Example <https://github.com/fccoelho/musicir/blob/main/examples/Extracting%20Harmonies.ipynb>
    Exploring Rhythms <Rhythms.ipynb>
-   reference
+   reference.md
    contributing
    Code of Conduct <codeofconduct>
    License <license>

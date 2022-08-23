@@ -1,9 +1,4 @@
-Reference
-=========
-
-
-musicir
--------
+# Reference
 
 .. automodule:: musicir
    :members:
