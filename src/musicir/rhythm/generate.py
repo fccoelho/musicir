@@ -1,11 +1,15 @@
-import math
+"""
+This module is based on ideas from the paper
+"The Euclidean Algorithm Generates Traditional Musical Rhythms"
+by Godfried Toussaint
+"""
 
 import matplotlib.patches as mp
 import matplotlib.pyplot as plt
 from matplotlib.collections import PatchCollection
-from music21 import stream, instrument
-from music21.note import Note, Rest
+from music21 import stream
 from music21.bar import Repeat
+from music21.note import Note, Rest
 
 
 class Euclid:
