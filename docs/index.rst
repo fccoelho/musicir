@@ -9,8 +9,9 @@
    :maxdepth: 2
 
    usage
-   Example <https://github.com/fccoelho/musicir/blob/main/examples/Extracting%20Harmonies.ipynb>
+   Example <Extracting_Harmonies.ipynb>
    Exploring Rhythms <Rhythms.ipynb>
+   Exploring Scales <Scales.ipynb>
    reference.md
    contributing
    Code of Conduct <codeofconduct>
