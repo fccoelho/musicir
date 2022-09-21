@@ -6,6 +6,7 @@ by Godfried Toussaint
 
 import matplotlib.patches as mp
 import matplotlib.pyplot as plt
+from typing import List, Tuple, Dict
 from matplotlib.collections import PatchCollection
 from music21 import stream
 from music21.bar import Repeat
@@ -22,7 +23,7 @@ class Euclid:
         self.rhythm = self._bjorklund()
         self.get_beat()
 
-    def _bjorklund(self) -> list[int]:
+    def _bjorklund(self) -> List[int]:
         """
         Bjorklunds algorithm to generate the Euclidean rhythm
         Returns:

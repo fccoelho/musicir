@@ -2,7 +2,7 @@ import json
 import os
 import xml.etree.ElementTree as ET
 from glob import glob
-
+from typing import List
 from music21 import converter
 from numpy import full
 from sqlalchemy import create_engine
@@ -20,7 +20,7 @@ class ChordParser:
 
     def __init__(self, element: ET.Element):
         self.root: str = element.find("root").find("root-step").text
-        alterations: list[ET.Element] = [el for el in element.iter("root-alter")]
+        alterations: List[ET.Element] = [el for el in element.iter("root-alter")]
         self.alteration = "" if not len(alterations) else alterations[0].text
         self.alteration = self.alt_symbols.get(self.alteration, self.alteration)
         self.kind = element.find("kind").attrib["text"]
@@ -81,7 +81,7 @@ class SongParser:
         self.measures = [measure for measure in xmlroot.iter("measure")]
         self.number_of_measures = len(self.measures)
 
-    def get_measure_chords(self, measure: int = 0) -> list[object]:
+    def get_measure_chords(self, measure: int = 0) -> List[object]:
         """
         return a list of Chords as xml elements from a specific measure.
         Args:
@@ -91,7 +91,7 @@ class SongParser:
 
         """
         meas = self.measures[measure]
-        chords: list[object] = meas.findall("harmony")
+        chords: List[object] = meas.findall("harmony")
         return chords
 
     def chords_as_json(self) -> str:
@@ -100,34 +100,34 @@ class SongParser:
         Returns: JSON string
 
         """
-        hj: list[dict[str, object]] = []
+        hj: List[dict[str, object]] = []
         for m in range(self.number_of_measures):
-            h: list[object] = self.get_measure_chords(m)
+            h: List[object] = self.get_measure_chords(m)
             hj.append({"measure": m, "chords": [ChordParser(c).__str__() for c in h]})
         return json.dumps(hj)
 
     def melody_as_json(self) -> str:
-        full_melody: list[dict[str, object]] = []
+        full_melody: List[dict[str, object]] = []
         for m in range(self.number_of_measures):
-            notes: list[object] = self.get_measure_melody(m)
+            notes: List[object] = self.get_measure_melody(m)
             full_melody.append(
                 {"measure": m, "notes": [NoteParser(n).__str__() for n in notes]}
             )
         return json.dumps(full_melody)
 
-    def get_measure_melody(self, measure: int = 0) -> list[object]:
+    def get_measure_melody(self, measure: int = 0) -> List[object]:
         """
         Returns list of notes in the specified measure. Each note is an xml element
         """
         meas = self.measures[measure]
-        notes: list[object] = meas.findall("note")
+        notes: List[object] = meas.findall("note")
         return notes or []
 
 
 def import_into_db(path: str) -> None:
     eng = create_engine("sqlite:///leadsheets.sqlite", echo=False, future=True)
     Base.metadata.create_all(eng)
-    songs: list[str] = glob(os.path.join(path, "*.xml")) + glob(
+    songs: List[str] = glob(os.path.join(path, "*.xml")) + glob(
         os.path.join(path, "*.musicxml")
     )
     with Session(eng) as session:

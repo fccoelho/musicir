@@ -1,5 +1,5 @@
 import music21 as m21
-
+from typing import List
 from . import circle5ths
 from . import get_enharmonic
 from . import scales
@@ -50,7 +50,7 @@ class Scale:
     def __repr__(self) -> str:
         return self.__str__()
 
-    def get_notes(self) -> list[str]:
+    def get_notes(self) -> List[str]:
         """
         Returns list of scale notes
         """
