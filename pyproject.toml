@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "musicir"
-version = "0.0.3"
+version = "0.0.4"
 description = "Music Information Retrieval"
 authors = ["Flávio Codeço Coelho <fccoelho@gmail.com>"]
 license = "MIT"
