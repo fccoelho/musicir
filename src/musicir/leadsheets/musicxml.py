@@ -41,10 +41,16 @@ class NoteParser:
         pitch = element.find("pitch")
         if not pitch:
             self.is_rest = True
-            self.figure = element.find("type").text
+            ftype = element.find("type")
+            if ftype is None:
+                self.figure = 'whole'
+            else:
+                self.figure = ftype.text
             self.duration = element.find("duration").text
             self.voice = element.find("voice").text
             self.note = None
+            if element.find('dot'):
+                self.dotted = True
             return
         else:
             self.is_rest = False
@@ -59,6 +65,10 @@ class NoteParser:
         self.figure = element.find("type").text
         self.duration = element.find("duration").text
         self.voice = element.find("voice").text
+        if element.find('dot'):
+            self.dotted = len(element.findall('dot'))
+        else:
+            self.dotted = 0
 
     def __repr__(self) -> str:
         if self.note:
@@ -108,6 +118,10 @@ class SongParser:
         return json.dumps(hj)
 
     def melody_as_json(self) -> str:
+        """
+        Returns the melody as a JSON string
+        Returns: JSON string
+        """
         full_melody: List[dict[str, object]] = []
         for m in range(self.number_of_measures):
             notes: List[object] = self.get_measure_melody(m)
@@ -128,8 +142,8 @@ class SongParser:
 def import_into_db(path: str) -> None:
     eng = create_engine("sqlite:///leadsheets.sqlite", echo=False, future=True)
     Base.metadata.create_all(eng)
-    songs: List[str] = glob(os.path.join(path, "*.xml")) + glob(
-        os.path.join(path, "*.musicxml")
+    songs: List[str] = glob(os.path.join(path, "*.xml"), recursive=True) + glob(
+        os.path.join(path, "*.musicxml"), recursive=True
     )
     with Session(eng) as session:
         objs = []
