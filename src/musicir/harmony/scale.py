@@ -1,5 +1,7 @@
-import music21 as m21
 from typing import List
+
+import music21 as m21
+
 from . import circle5ths
 from . import get_enharmonic
 from . import scales

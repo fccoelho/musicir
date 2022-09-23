@@ -3,6 +3,7 @@ import os
 import xml.etree.ElementTree as ET
 from glob import glob
 from typing import List
+
 from music21 import converter
 from numpy import full
 from sqlalchemy import create_engine

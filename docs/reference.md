@@ -1,4 +1,4 @@
 # Reference
 
 .. automodule:: musicir
-   :members:
+:members:

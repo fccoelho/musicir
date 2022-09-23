@@ -59,6 +59,10 @@ nbsphinx = "^0.8.9"
 [tool.poetry.scripts]
 musicir = "musicir.__main__:main"
 
+[tool.poetry.group.dev.dependencies]
+nox-poetry = "^1.0.1"
+mypy = "^0.971"
+
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
 tests = ["tests", "*/tests"]
@@ -69,7 +73,7 @@ source = ["musicir", "tests"]
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 100
+fail_under = 85
 
 [tool.mypy]
 strict = true
