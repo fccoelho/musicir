@@ -23,8 +23,13 @@ class ChordParser:
         alterations: List[ET.Element] = [el for el in element.iter("root-alter")]
         self.alteration = "" if not len(alterations) else alterations[0].text
         self.alteration = self.alt_symbols.get(self.alteration, self.alteration)
-        self.kind = element.find("kind").attrib["text"]
-        self.function = element.find("kind").text
+        kind = element.find("kind")
+        if kind:
+            self.kind = kind.attrib["text"]
+            self.function = kind.text
+        else:
+            self.kind = ''
+            self.function = ''
 
     def __repr__(self) -> str:
         return f"{self.root}{self.alteration}{self.kind} - {self.function}"

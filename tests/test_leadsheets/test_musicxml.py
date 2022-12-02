@@ -35,7 +35,9 @@ class MyTestCase(unittest.TestCase):
         # self.assertIsInstance(c, list)
 
     def test_load_directory(self) -> None:
-        import_into_db("tests/test_leadsheets/fixtures")
+        # import_into_db("tests/test_leadsheets/fixtures")
+        import_into_db("/mnt/Datos/RealBooks/effendi.me/jazz/repo/I")
+
 
     def test_get_melody(self) -> None:
         ls = SongParser("tests/test_leadsheets/fixtures/Ambidextrous.xml")
