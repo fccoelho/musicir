@@ -18,6 +18,8 @@ class Song(Base):
     composer = relationship("Musician", back_populates="songs")
     harmony = relationship("Harmony", back_populates="song")
     melody = relationship("Melody", back_populates="song")
+    tonality = Column(String)
+    mode = Column(String)
 
     def __repr__(self) -> str:
         return f"Song(id={self.id!r}, title={self.title!r}, composer={self.composer!r})"

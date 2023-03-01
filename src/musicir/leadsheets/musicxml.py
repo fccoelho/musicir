@@ -4,8 +4,8 @@ import xml.etree.ElementTree as ET
 from glob import glob
 from typing import List
 
-from music21 import converter
-from numpy import full
+from music21 import converter, stream, key, features
+# from numpy import full
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
@@ -51,7 +51,10 @@ class NoteParser:
                 self.figure = 'whole'
             else:
                 self.figure = ftype.text
-            self.duration = element.find("duration").text
+            try:
+                self.duration = element.find("duration").text
+            except AttributeError:
+                self.duration = 1 #TODO: check if this default is ok
             self.voice = element.find("voice").text
             self.note = None
             if element.find('dot'):
@@ -68,7 +71,10 @@ class NoteParser:
             self.alter = ""
             self.accidental = ""
         self.figure = element.find("type").text
-        self.duration = element.find("duration").text
+        try:
+            self.duration = element.find("duration").text
+        except AttributeError:
+            self.duration = 1
         self.voice = element.find("voice").text
         if element.find('dot'):
             self.dotted = len(element.findall('dot'))
@@ -92,6 +98,7 @@ class SongParser:
         Args:
             xmlfile: path of a musicxml file
         """
+        self.xmlfile = xmlfile
         tree = ET.parse(xmlfile)
         xmlroot = tree.getroot()
         self.measures = [measure for measure in xmlroot.iter("measure")]
@@ -156,6 +163,7 @@ def import_into_db(path: str) -> None:
             print(f"{i+1} of {len(songs)}: {song}loading {song}...\r", end="")
             SO = converter.parse(song)
             HP = SongParser(song)
+            tonality = get_tonality(SO)
             sng = Song(
                 title=SO.metadata.title,
                 composer=Musician(name=SO.metadata.composer),
@@ -163,7 +171,28 @@ def import_into_db(path: str) -> None:
                 harmony=[
                     Harmony(measures=HP.number_of_measures, chords=HP.chords_as_json())
                 ],
+                melody=[Melody(notes=HP.melody_as_json())],
+                tonality='' if not tonality else tonality.name,
+                mode='' if not tonality else tonality.mode
             )
             objs.append(sng)
         session.add_all(objs)
         session.commit()
+
+def get_tonality(score: stream.Score) -> key.Key:
+    """
+    Estimates the Tonality of the Song
+    Args:
+        score: A score object as parsed from Music21 converter
+
+    Returns: A key object
+    """
+    try:
+        k = score.analyze('key.krumhanslschmuckler')
+    except Exception as exc:
+        return ''
+
+    if k.tonalCertainty() < 0.9:
+        return ''
+    else:
+        return k
