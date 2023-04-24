@@ -19,21 +19,27 @@ from .model import Song
 class ChordParser:
     alt_symbols: dict[str, str] = {"-1": "♭", "1": "♯"}
 
-    def __init__(self, element: ET.Element):
+    def __init__(self, element: ET.Element) -> None:
         self.root: str = element.find("root").find("root-step").text
         alterations: List[ET.Element] = [el for el in element.iter("root-alter")]
-        self.alteration = "" if not len(alterations) else alterations[0].text
+        self.alteration: str = "" if not len(alterations) else alterations[0].text
         self.alteration = self.alt_symbols.get(self.alteration, self.alteration)
-        kind = element.find("kind")
-        if kind:
-            self.kind = kind.attrib["text"]
-            self.function = kind.text
+        kind_el = element.find("kind")
+        if kind_el:
+            self.kind = kind_el.attrib["text"]
+            self.function = kind_el.text
         else:
             self.kind = ''
             self.function = ''
 
+    def get_harmonic_function(self) -> str:
+        """
+        Returns the harmonic function of the chord.
+        """
+        return self.function
+
     def __repr__(self) -> str:
-        return f"{self.root}{self.alteration}{self.kind} - {self.function}"
+        return f"{self.root}{self.alteration}{self.kind}"
 
     def __str__(self) -> str:
         return self.__repr__()
@@ -54,7 +60,7 @@ class NoteParser:
             try:
                 self.duration = element.find("duration").text
             except AttributeError:
-                self.duration = 1 #TODO: check if this default is ok
+                self.duration = 1  # TODO: check if this default is ok
             self.voice = element.find("voice").text
             self.note = None
             if element.find('dot'):
@@ -160,7 +166,7 @@ def import_into_db(path: str) -> None:
     with Session(eng) as session:
         objs = []
         for i, song in enumerate(songs):
-            print(f"{i+1} of {len(songs)}: {song}loading {song}...\r", end="")
+            print(f"{i + 1} of {len(songs)}: {song}loading {song}...\r", end="")
             SO = converter.parse(song)
             HP = SongParser(song)
             tonality = get_tonality(SO)
@@ -178,6 +184,7 @@ def import_into_db(path: str) -> None:
             objs.append(sng)
         session.add_all(objs)
         session.commit()
+
 
 def get_tonality(score: stream.Score) -> key.Key:
     """
