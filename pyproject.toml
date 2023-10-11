@@ -16,12 +16,11 @@ classifiers = [
 Changelog = "https://github.com/fccoelho/musicir/releases"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.10"
 click = "^8.0.1"
-music21 = "^7.3.1"
-SQLAlchemy = {extras = ["mypy"], version = "^1.4.35"}
+music21 = "^9.1.0"
+SQLAlchemy = {extras = ["mypy"], version = "^2.0"}  # 1.4.3
 attrs = ">=21.4,<23.0"
-myst-parser = "^0.17.2"
 matplotlib = "^3.5.3"
 pretty_midi = "^0.2.9"
 jupyter = "^1.0.0"
@@ -51,8 +50,8 @@ Pygments = "^2.10.0"
 pyupgrade = "^3.3.1"
 furo = ">=2021.11.12"
 myst = "^1.0.4"
-myst-nb = "^0.15.0"
-myst-parser = "^0.17.2"
+myst-nb = "^0.17.2"
+myst-parser = "*"
 nox = "^2022.1.7"
 nox-poetry = "^1.0.0"
 nbsphinx = "^0.8.9"
