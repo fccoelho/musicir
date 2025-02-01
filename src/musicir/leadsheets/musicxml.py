@@ -109,6 +109,17 @@ class SongParser:
         xmlroot = tree.getroot()
         self.measures = [measure for measure in xmlroot.iter("measure")]
         self.number_of_measures = len(self.measures)
+    @property
+    def score(self) -> stream.base.Score:
+        return converter.parse(self.xmlfile)
+
+    def to_png(self, dpi: int = 300) -> None:
+        """
+        Saves the score as a png file
+        Returns:
+        """
+        os.system(f"musescore3 -o {self.xmlfile}.png -r {dpi} {self.xmlfile} ")
+
 
     def get_measure_chords(self, measure: int = 0) -> List[object]:
         """
@@ -197,9 +208,9 @@ def get_tonality(score: stream.Score) -> key.Key:
     try:
         k = score.analyze('key.krumhanslschmuckler')
     except Exception as exc:
-        return ''
+        raise(exc)
 
-    if k.tonalCertainty() < 0.9:
+    if k.tonalCertainty() < 0.5:
         return ''
     else:
         return k

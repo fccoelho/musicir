@@ -6,6 +6,9 @@ from musicir.leadsheets.musicxml import ChordParser
 from musicir.leadsheets.musicxml import import_into_db
 from musicir.leadsheets.musicxml import NoteParser
 from musicir.leadsheets.musicxml import SongParser
+from musicir.leadsheets.musicxml import get_tonality
+from music21.stream.base import Score
+from music21.key import Key
 
 
 class MyTestCase(unittest.TestCase):
@@ -13,8 +16,10 @@ class MyTestCase(unittest.TestCase):
         self.songpath = "tests/test_leadsheets/fixtures/Ambidextrous.xml"
         self.songpath2 = "tests/test_leadsheets/fixtures/Blue Moon.xml"
         self.songpath3 = "tests/test_leadsheets/fixtures/Black Ice.xml"
+
     def test_parse_file(self) -> None:
         ls = SongParser(self.songpath)
+        self.assertIsInstance(ls.score, Score)
 
     def test_ChordParser(self) -> None:
         ls = SongParser(self.songpath)
@@ -42,7 +47,6 @@ class MyTestCase(unittest.TestCase):
         # import_into_db("tests/test_leadsheets/fixtures")
         import_into_db("/mnt/Datos/RealBooks/effendi.me/jazz/repo/I")
 
-
     def test_get_measure_melody(self) -> None:
         ls = SongParser(self.songpath2)
         ns = ls.get_measure_melody(1)
@@ -55,5 +59,14 @@ class MyTestCase(unittest.TestCase):
         ls = SongParser(self.songpath3)
         j = ls.melody_as_json()
 
+    def test_get_tonality(self):
+        ls = SongParser(self.songpath)
+        tonality = get_tonality(ls.score)
+        self.assertEqual(Key("B-"), tonality)
+
+
 if __name__ == "__main__":
     unittest.main()
+
+
+
